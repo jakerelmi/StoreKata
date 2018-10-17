@@ -62,7 +62,15 @@ namespace StoreKata
         // Display Methods
         private void UpdateCheckout(Item item)
         {
-            Console.WriteLine("- " + item.name + "\t\t\t$" + item.price);
+            if (item.quanity > 1)
+            {
+
+                Console.WriteLine("- " + item.name + "\t" +  item.quanity + "X" + " ($" + item.value + " each) "  + "\n\t\t\t$" + item.price);
+            }
+            else
+            {
+                Console.WriteLine("- " + item.name + "\t\t\t$" + item.price);
+            }
         }
 
         private void DisplayCheckout()
