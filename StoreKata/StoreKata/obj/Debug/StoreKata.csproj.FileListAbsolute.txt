@@ -1,0 +1,7 @@
+C:\Users\jaker\Desktop\StoreKata\StoreKata\StoreKata\bin\Debug\StoreKata.exe.config
+C:\Users\jaker\Desktop\StoreKata\StoreKata\StoreKata\bin\Debug\StoreKata.exe
+C:\Users\jaker\Desktop\StoreKata\StoreKata\StoreKata\bin\Debug\StoreKata.pdb
+C:\Users\jaker\Desktop\StoreKata\StoreKata\StoreKata\obj\Debug\StoreKata.csprojResolveAssemblyReference.cache
+C:\Users\jaker\Desktop\StoreKata\StoreKata\StoreKata\obj\Debug\StoreKata.csproj.CoreCompileInputs.cache
+C:\Users\jaker\Desktop\StoreKata\StoreKata\StoreKata\obj\Debug\StoreKata.exe
+C:\Users\jaker\Desktop\StoreKata\StoreKata\StoreKata\obj\Debug\StoreKata.pdb
