@@ -1,1 +1,2 @@
 # StoreKata
+Testing commit
