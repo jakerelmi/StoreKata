@@ -19,9 +19,9 @@ namespace StoreKata
 
             // Updates after scan
             public float price;
-            public Type type;
 
-            public enum Type { Weighed, Each};
+            public Type type;
+            public enum Type { Weighed, Each };
         }
 
         public void RunTest()
@@ -49,6 +49,9 @@ namespace StoreKata
             testItem3.price = 0.0f;
             testItem3.type = Item.Type.Weighed;
 
+            // Markdown Item Test
+            testItem1 = Markdown(testItem1, 0.2f);
+
             //Add Item Test
             ScanItem(testItem1);
             ScanItem(testItem2);
@@ -71,6 +74,14 @@ namespace StoreKata
             UpdateCheckout(storeItem);
         }
 
+        // Markdown Item Test
+        public Item Markdown(Item storeItem, float amount)
+        {
+            Item item = storeItem;
+            item.value -= amount;
+            return item;
+           
+        }
 
         // Display Methods
         private void UpdateCheckout(Item item)
