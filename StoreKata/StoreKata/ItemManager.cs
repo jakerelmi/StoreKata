@@ -42,7 +42,7 @@ namespace StoreKata
 
             Item testItem2;
             testItem2.name = "Soup";
-            testItem2.quanity = 7;
+            testItem2.quanity = 10;
             testItem2.value = 2.70f;
             testItem2.price = 0.0f;
             testItem2.type = Item.Type.Each;
@@ -69,9 +69,9 @@ namespace StoreKata
             ScanItem(testItem3);
 
             // Apply specials
-            BuyNItemsGetMOffSpecial(testItem1, 2, 0.5f); // Buy 2 get next 50% off on Milk
-            BuyNItemsGetMOffSpecial(testItem2, 2, 1.0f); // Buy 1 get 1 free soup.
-            BuyNforXSpecial(testItem2, 3, 2.0f); // Buy 3 for $5.00 soup
+            //BuyNItemsGetMOffSpecial(testItem1, 2, 0.5f, 2); // Buy 2 get next 50% off on Milk
+            BuyNItemsGetMOffSpecial(testItem2, 1, 1.0f, 4); // Buy 1 get 1 free soup (Max of 4).
+            BuyNforXSpecial(testItem2, 3, 2.0f); // Buy 3 for $2.00 soup
 
             Console.WriteLine("\n\t\t\t\t\t Total: $" + totalPrice);
         }
@@ -106,7 +106,7 @@ namespace StoreKata
         }
 
         // Special Item Test (Buy N get M X% off)
-        private void BuyNItemsGetMOffSpecial(Item storeItem, int quanitityQualification, float amount)
+        private void BuyNItemsGetMOffSpecial(Item storeItem, int quanitityQualification, float amount, int maximumSpecials)
         {
             // Only apply to non-weighed items
             if (storeItem.type != Item.Type.Each)
@@ -123,6 +123,9 @@ namespace StoreKata
                     {
                         index = 0;
                         qualifications++;
+
+                        if (qualifications >= maximumSpecials)
+                            break;
 
                         continue;
                     }
