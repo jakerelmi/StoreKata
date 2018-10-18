@@ -60,6 +60,15 @@ namespace StoreKata
             testItem3.markDownAmount = 0.0f;
             testItem3.discountAmount = 0.0f;
 
+            Item testItem4;
+            testItem4.name = "Beef";
+            testItem4.quanity = 1.0f;
+            testItem4.value = 1.70f;
+            testItem4.price = 0.0f;
+            testItem4.type = Item.Type.Weighed;
+            testItem4.markDownAmount = 0.0f;
+            testItem4.discountAmount = 0.0f;
+
             // Milk
             testItem1 = Markdown(testItem1, testItem1.markDownAmount);
             testItem1 = ScanItem(testItem1);
@@ -72,10 +81,14 @@ namespace StoreKata
             testItem3 = Markdown(testItem3, testItem3.markDownAmount);
             testItem3 = ScanItem(testItem3);
 
+            // Beef
+            testItem4 = ScanItem(testItem4);
+
             // Apply specials
-            //BuyNItemsGetMOffSpecial(testItem1, 2, 0.5f, 2); // Buy 2 get next 50% off on Milk
+            BuyNItemsGetMOffSpecial(testItem1, 2, 0.5f, 2); // Buy 2 get next 50% off on Milk
             testItem2 = BuyNItemsGetMOffSpecial(testItem2, 1, 1.0f, 4); // Buy 1 get 1 free soup (Max of 4).
-            testItem2 = BuyNforXSpecial(testItem2, 3, 2.0f); // Buy 3 for $2.00 soup
+            testItem2 = BuyNGetXSpecial(testItem2, 3, 2.0f); // Buy 3 for $2.00 soup
+            testItem4 = BuyNGetMForXSpecialWeightedItems(testItem3, testItem4, 0.5f); // Buy N and get M of lesser or equal value X% off
 
             Console.WriteLine("\n\t\t\t\t\t Total: $" + totalPrice);
 
@@ -159,7 +172,7 @@ namespace StoreKata
         }
 
         // Special Item Test (Buy N for $X)
-        private Item BuyNforXSpecial(Item storeItem, int quanitityQualification, float amount)
+        private Item BuyNGetXSpecial(Item storeItem, int quanitityQualification, float amount)
         {
             // Only apply to non-weighed items
             if (storeItem.type != Item.Type.Each)
@@ -174,6 +187,29 @@ namespace StoreKata
 
                 // Display to customer
                 specialOfferText = string.Format("-Applied Buy {0} for ${1} special for {2}!\n\t\t\t\t\t\t- ${3}", quanitityQualification, amount, storeItem.name, item.discountAmount);
+            }
+
+            if (specialOfferText != "")
+                Console.WriteLine(specialOfferText);
+
+            return item;
+        }
+
+        private Item BuyNGetMForXSpecialWeightedItems(Item originalItem, Item discountedItem, float amount)
+        {
+            // Only apply to non-weighed items
+            if (originalItem.type != Item.Type.Weighed)
+                return discountedItem;
+
+            //Only apply to items of lesser or equal value
+            Item item = discountedItem;
+
+            if (originalItem.value >= item.value)
+            {
+                item.discountAmount = item.price - (item.price * amount);
+                totalPrice -= item.discountAmount;
+
+                specialOfferText = string.Format("-Applied Buy {0} and get {1} of lesser or equal value for {2}% less!\n\t\t\t\t\t\t-${3}", originalItem.name, discountedItem.name, amount * 100f, item.discountAmount);
             }
 
             if (specialOfferText != "")
