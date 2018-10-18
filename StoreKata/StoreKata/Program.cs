@@ -13,7 +13,6 @@ namespace StoreKata
             while (true)
                 itemManager.UpdateStoreUsingUserInput();
             
-            Console.ReadKey();
         }
     }
 

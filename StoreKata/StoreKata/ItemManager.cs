@@ -96,9 +96,9 @@ namespace StoreKata
 
         public void UpdateStoreUsingUserInput()
         {
-            double input;
+            int input;
 
-            if (double.TryParse(Console.ReadLine(), out input))
+            if (int.TryParse(Console.ReadLine(), out input))
             {
                 if (input > 0 && input < 6)
                 {
@@ -127,7 +127,8 @@ namespace StoreKata
                             break;
                     }
                 }
-
+                else
+                    Console.WriteLine("Please Enter command:\n\n");
             }
             else
             {
@@ -139,6 +140,9 @@ namespace StoreKata
         {
             Console.WriteLine("WELCOME TO THE STORE");
             Console.WriteLine("------------------------------------------------------");
+            Console.WriteLine("Offer: Buy 1 get 1 50% off Soup special! (4 max)");
+            Console.WriteLine("Offer: Buy 3 for $2.00 Milk special!\n\n");
+
 
             Console.WriteLine("Please Enter command:\n\n");
             Console.WriteLine("1. Scan Milk\t\t\t\t$" + testItem1.value);
