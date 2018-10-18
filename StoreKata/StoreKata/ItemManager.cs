@@ -70,7 +70,8 @@ namespace StoreKata
 
             // Apply specials
             BuyNItemsGetMOffSpecial(testItem1, 2, 0.5f); // Buy 2 get next 50% off on Milk
-            BuyNItemsGetMOffSpecial(testItem2, 1, 1.0f); // Buy 1 get 1 free soup
+            BuyNItemsGetMOffSpecial(testItem2, 1, 1.0f); // Buy 1 get 1 free soup.
+            BuyNforXSpecial(testItem2, 3, 2.0f); // Buy 3 for $5.00 soup
 
             Console.WriteLine("\n\t\t\t\t\t Total: $" + totalPrice);
         }
@@ -104,7 +105,7 @@ namespace StoreKata
            
         }
 
-        // Special Item Test
+        // Special Item Test (Buy N get M X% off)
         private void BuyNItemsGetMOffSpecial(Item storeItem, int quanitityQualification, float amount)
         {
             // Only apply to non-weighed items
@@ -121,6 +122,26 @@ namespace StoreKata
                 specialOfferText = string.Format("-Applied Buy {0} get 1 {1}% off special for {2}!\n\t\t\t\t\t\t- ${3}", quanitityQualification, amount * 100, storeItem.name, discountAmount);
             }
             
+            if (specialOfferText != "")
+                Console.WriteLine(specialOfferText);
+        }
+
+        // Special Item Test (Buy N for $X)
+        private void BuyNforXSpecial(Item storeItem, int quanitityQualification, float amount)
+        {
+            // Only apply to non-weighed items
+            if (storeItem.type != Item.Type.Each)
+                return;
+
+            if (storeItem.quanity >= quanitityQualification)
+            {
+                 float discountAmount = (quanitityQualification * storeItem.value) - amount;
+                 totalPrice -= discountAmount;
+
+                // Display to customer
+                specialOfferText = string.Format("-Applied Buy {0} for ${1} special for {2}!\n\t\t\t\t\t\t- ${3}", quanitityQualification, amount, storeItem.name, discountAmount);
+            }
+
             if (specialOfferText != "")
                 Console.WriteLine(specialOfferText);
         }
@@ -142,11 +163,9 @@ namespace StoreKata
 
             if(item.markDownAmount > 0.0f)
                 Console.WriteLine(markedDownText);
-
-
+            
             specialOfferText = "";
-
-
+            
             Console.WriteLine("------------------------------------------------------");
 
         }
