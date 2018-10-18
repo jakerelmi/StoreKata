@@ -34,7 +34,7 @@ namespace StoreKata
             // Test Items
             Item testItem1;
             testItem1.name = "Milk";
-            testItem1.quanity = 3;
+            testItem1.quanity = 1;
             testItem1.value = 2.50f;
             testItem1.price = 0.0f;
             testItem1.type = Item.Type.Each;
@@ -42,7 +42,7 @@ namespace StoreKata
 
             Item testItem2;
             testItem2.name = "Soup";
-            testItem2.quanity = 6;
+            testItem2.quanity = 7;
             testItem2.value = 2.70f;
             testItem2.price = 0.0f;
             testItem2.type = Item.Type.Each;
@@ -70,7 +70,7 @@ namespace StoreKata
 
             // Apply specials
             BuyNItemsGetMOffSpecial(testItem1, 2, 0.5f); // Buy 2 get next 50% off on Milk
-            BuyNItemsGetMOffSpecial(testItem2, 1, 1.0f); // Buy 1 get 1 free soup.
+            BuyNItemsGetMOffSpecial(testItem2, 2, 1.0f); // Buy 1 get 1 free soup.
             BuyNforXSpecial(testItem2, 3, 2.0f); // Buy 3 for $5.00 soup
 
             Console.WriteLine("\n\t\t\t\t\t Total: $" + totalPrice);
@@ -114,8 +114,24 @@ namespace StoreKata
 
             if (storeItem.quanity > quanitityQualification)
             {
+                // To accumulate specials
+                int qualifications = 0;
+                int index = 0;
+                for (int i = 0; i < storeItem.quanity; i++)
+                {
+                    if (index == quanitityQualification)
+                    {
+                        index = 0;
+                        qualifications++;
+
+                        continue;
+                    }
+                    index++;
+
+                }
+                
                 // Apply discount after scan 
-                float discountAmount = amount * storeItem.value;
+                float discountAmount = (amount * storeItem.value) * qualifications;
                 totalPrice -= discountAmount;
 
                 // Display to customer
