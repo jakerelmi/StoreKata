@@ -11,9 +11,8 @@ namespace StoreKata
 
             itemManager.DisplayStoreOptions();
             while (true)
-            itemManager.UpdateStoreUsingUserInput();
-
-            Console.WriteLine("\n\n\n\nPress any key to close...");
+                itemManager.UpdateStoreUsingUserInput();
+            
             Console.ReadKey();
         }
     }

@@ -159,7 +159,6 @@ namespace StoreKata
                     item.quanity = input;
                 }
             }
-
             item.price = item.value * item.quanity;
 
             // Increment total price
@@ -169,6 +168,16 @@ namespace StoreKata
             items.Add(item);
 
             DisplayCheckout(item);
+
+            if (item.name == "Soup")
+            {
+                BuyNItemsGetMOffSpecial(item, 1, 0.5f, 4);
+            }
+            else if (item.name == "Milk")
+            {
+                if(item.quanity >= 3)
+                    BuyNGetXSpecial(item, 3, 2.0f);
+            }
 
 
             Console.WriteLine("\n\t\t\t\t\t Total: $" + totalPrice);
