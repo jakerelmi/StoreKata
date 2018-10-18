@@ -119,7 +119,11 @@ namespace StoreKata
                             ScanItem(testItem4);
                             break;
                         case 5:
-                            RemoveStoreItem(items[items.Count - 1], 1);
+                            if(items.Count >= 1)
+                                RemoveStoreItem(items[items.Count - 1], 1);
+                            else
+                                Console.WriteLine("Your cart is empty!");
+
                             break;
                     }
                 }
@@ -127,6 +131,7 @@ namespace StoreKata
             }
             else
             {
+                Console.WriteLine("Please Enter command:\n\n");
             }
         }
 
@@ -153,10 +158,14 @@ namespace StoreKata
             {
                 Console.WriteLine("How many would you like to scan?");
 
-                float input;
-                if (float.TryParse(Console.ReadLine(), out input))
+                int input;
+                if (int.TryParse(Console.ReadLine(), out input))
                 {
                     item.quanity = input;
+                }
+                else
+                {
+                    Console.WriteLine("How many would you like to scan?");
                 }
             }
             item.price = item.value * item.quanity;
