@@ -60,6 +60,35 @@ namespace StoreKata
 
             Assert.AreEqual(resultedItem, itemManager.Markdown(testItem, desiredMarkDownAmount));
         }
-        
+
+        [TestCase]
+        public void BuyNItemsGetMOffSpecialTest()
+        {
+            ItemManager.Item testItem;
+
+            testItem.name = "Milk";
+            testItem.quanity = 6;
+            testItem.value = 2.50f;
+            testItem.price = 0.0f;
+            testItem.type = ItemManager.Item.Type.Each;
+            testItem.markDownAmount = 0.0f;
+            testItem.discountAmount = 0.0f;
+
+
+            // This item has coupon applied 
+            ItemManager.Item resultItem;
+            resultItem.name = "Milk";
+            resultItem.quanity = 1;
+            resultItem.value = 2.50f;
+            resultItem.price = 0.00f; 
+            resultItem.type = ItemManager.Item.Type.Each;
+            resultItem.markDownAmount = 0.0f;
+            resultItem.discountAmount = 2.50f; // Can accumulate up until specified max
+
+            // Buy 1 get 1 50% off (Bought 4 and total discount is -$2.50) 
+            // Can't reduce more than twice (Max reduction: $2.50)
+            Assert.AreEqual(resultItem.discountAmount, itemManager.BuyNItemsGetMOffSpecial(testItem, 1, 0.5f, 2).discountAmount);
+        }
+
     }
 }

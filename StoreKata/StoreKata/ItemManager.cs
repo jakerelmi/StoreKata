@@ -184,7 +184,7 @@ namespace StoreKata
         }
 
         // Special Item Test (Buy N get M X% off)
-        private Item BuyNItemsGetMOffSpecial(Item storeItem, int quanitityQualification, float amount, int maximumSpecials)
+        public Item BuyNItemsGetMOffSpecial(Item storeItem, int quanitityQualification, float amount, int maximumSpecials)
         {
             // Only apply to non-weighed items
             if (storeItem.type != Item.Type.Each)
@@ -228,7 +228,7 @@ namespace StoreKata
         }
 
         // Special Item Test (Buy N for $X)
-        private Item BuyNGetXSpecial(Item storeItem, int quanitityQualification, float amount)
+        public Item BuyNGetXSpecial(Item storeItem, int quanitityQualification, float amount)
         {
             // Only apply to non-weighed items
             if (storeItem.type != Item.Type.Each)
