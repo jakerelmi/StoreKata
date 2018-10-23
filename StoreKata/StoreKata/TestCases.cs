@@ -116,5 +116,36 @@ namespace StoreKata
             Assert.AreEqual(resultItem.discountAmount,2, Math.Round(itemManager.BuyNGetXSpecial(testItem, 3, 2.0f).discountAmount, 2));
 
         }
+
+        [TestCase]
+        public void BuyNGetMForXSpecialWeightedItemsTest()
+        {
+            ItemManager.Item testItem1;
+            testItem1.name = "Bananas";
+            testItem1.quanity = 0.4f;
+            testItem1.value = 1.89f;
+            testItem1.price = 0.0f;
+            testItem1.type = ItemManager.Item.Type.Weighed;
+            testItem1.markDownAmount = 0.0f;
+            testItem1.discountAmount = 0.0f;
+            
+            // Item that gets offer applied to (Must be <= value)
+            ItemManager.Item testItem2;
+            testItem2.name = "Beef";
+            testItem2.quanity = 1.0f;
+            testItem2.value = 1.70f;
+            testItem2.price = 0.0f;
+            testItem2.type = ItemManager.Item.Type.Weighed;
+            testItem2.markDownAmount = 0.0f;
+            testItem2.discountAmount = 0.0f;
+
+            // Must scan items first before applying special offer
+            testItem1 = itemManager.ScanItem(testItem1);
+            testItem2 = itemManager.ScanItem(testItem2);
+
+            float resultedDiscountAmount = 0.85f; // Second item is half off ($1.70 * 0.5)
+
+            Assert.AreEqual(resultedDiscountAmount, itemManager.BuyNGetMForXSpecialWeightedItems(testItem1, testItem2, 0.5f).discountAmount);
+        }
     }
 }

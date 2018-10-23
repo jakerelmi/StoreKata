@@ -251,7 +251,7 @@ namespace StoreKata
             return item;
         }
 
-        private Item BuyNGetMForXSpecialWeightedItems(Item originalItem, Item discountedItem, float amount)
+        public Item BuyNGetMForXSpecialWeightedItems(Item originalItem, Item discountedItem, float amount)
         {
             // Only apply to non-weighed items
             if (originalItem.type != Item.Type.Weighed)
