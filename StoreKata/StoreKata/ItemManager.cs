@@ -70,18 +70,18 @@ namespace StoreKata
         {
             // Milk
             testItem1 = Markdown(testItem1, testItem1.markDownAmount);
-            testItem1 = ScanItem(testItem1);
+            testItem1 = ScanItemInterface(testItem1);
 
             // Soup
             testItem2 = Markdown(testItem2, testItem2.markDownAmount);
-            testItem2 = ScanItem(testItem2);
+            testItem2 = ScanItemInterface(testItem2);
 
             // Bananas
             testItem3 = Markdown(testItem3, testItem3.markDownAmount);
-            testItem3 = ScanItem(testItem3);
+            testItem3 = ScanItemInterface(testItem3);
 
             // Beef
-            testItem4 = ScanItem(testItem4);
+            testItem4 = ScanItemInterface(testItem4);
 
             // Apply specials
             BuyNItemsGetMOffSpecial(testItem1, 2, 0.5f, 2); // Buy 2 get next 50% off on Milk
@@ -105,21 +105,21 @@ namespace StoreKata
                     switch (input)
                     {
                         case 1:
-                            ScanItem(testItem1);
+                            ScanItemInterface(testItem1);
                             break;
                         case 2:
-                            ScanItem(testItem2);
+                            ScanItemInterface(testItem2);
                             break;
 
                         case 3:
-                            ScanItem(testItem3);
+                            ScanItemInterface(testItem3);
                             break;
 
                         case 4:
-                            ScanItem(testItem4);
+                            ScanItemInterface(testItem4);
                             break;
                         case 5:
-                            if(items.Count >= 1)
+                            if (items.Count >= 1)
                                 RemoveStoreItem(items[items.Count - 1], 1);
                             else
                                 Console.WriteLine("Your cart is empty!");
@@ -154,24 +154,9 @@ namespace StoreKata
         }
 
         // Add Item Test
-        private Item ScanItem(Item storeItem)
+        public Item ScanItem(Item storeItem)
         {
             Item item = storeItem;
-
-            if (item.type != Item.Type.Weighed)
-            {
-                Console.WriteLine("How many would you like to scan?");
-
-                int input;
-                if (int.TryParse(Console.ReadLine(), out input))
-                {
-                    item.quanity = input;
-                }
-                else
-                {
-                    Console.WriteLine("How many would you like to scan?");
-                }
-            }
             item.price = item.value * item.quanity;
 
             // Increment total price
@@ -180,20 +165,6 @@ namespace StoreKata
             // Add item to list
             items.Add(item);
 
-            DisplayCheckout(item);
-
-            if (item.name == "Soup")
-            {
-                BuyNItemsGetMOffSpecial(item, 1, 0.5f, 4);
-            }
-            else if (item.name == "Milk")
-            {
-                if(item.quanity >= 3)
-                    BuyNGetXSpecial(item, 3, 2.0f);
-            }
-
-
-            Console.WriteLine("\n\t\t\t\t\t Total: $" + totalPrice);
             return item;
         }
 
@@ -343,6 +314,42 @@ namespace StoreKata
 
             Console.WriteLine("------------------------------------------------------");
 
+        }
+
+        private Item ScanItemInterface(Item storeItem)
+        {
+            if (storeItem.type != Item.Type.Weighed)
+            {
+                Console.WriteLine("How many would you like to scan?");
+
+                int input;
+                if (int.TryParse(Console.ReadLine(), out input))
+                {
+                    storeItem.quanity = input;
+                }
+                else
+                {
+                    Console.WriteLine("How many would you like to scan?");
+                }
+            }
+
+            Item item = ScanItem(storeItem);
+
+            DisplayCheckout(item);
+
+            if (item.name == "Soup")
+            {
+                BuyNItemsGetMOffSpecial(item, 1, 0.5f, 4);
+            }
+            else if (item.name == "Milk")
+            {
+                if (item.quanity >= 3)
+                    BuyNGetXSpecial(item, 3, 2.0f);
+            }
+
+            Console.WriteLine("\n\t\t\t\t\t Total: $" + totalPrice);
+
+            return item;
         }
     }
 }
