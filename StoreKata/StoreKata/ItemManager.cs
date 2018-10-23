@@ -184,7 +184,7 @@ namespace StoreKata
         }
 
         // Special Item Test (Buy N get M X% off)
-        public Item BuyNItemsGetMOffSpecial(Item storeItem, int quanitityQualification, float amount, int maximumSpecials)
+        public Item BuyNItemsGetMOffSpecial(Item storeItem, int quantityQualification, float amount, int maximumSpecials)
         {
             // Only apply to non-weighed items
             if (storeItem.type != Item.Type.Each)
@@ -192,14 +192,14 @@ namespace StoreKata
 
             Item item = storeItem;
 
-            if (storeItem.quanity > quanitityQualification)
+            if (storeItem.quanity > quantityQualification)
             {
                 // To accumulate specials
                 int qualifications = 0;
                 int index = 0;
                 for (int i = 0; i < storeItem.quanity; i++)
                 {
-                    if (index == quanitityQualification)
+                    if (index == quantityQualification)
                     {
                         index = 0;
                         qualifications++;
@@ -218,7 +218,7 @@ namespace StoreKata
                 totalPrice -= item.discountAmount;
 
                 // Display to customer
-                specialOfferText = string.Format("-Applied Buy {0} get 1 {1}% off special for {2}!\n\t\t\t\t\t\t- ${3}", quanitityQualification, amount * 100, storeItem.name, item.discountAmount);
+                specialOfferText = string.Format("-Applied Buy {0} get 1 {1}% off special for {2}!\n\t\t\t\t\t\t- ${3}", quantityQualification, amount * 100, storeItem.name, item.discountAmount);
             }
 
             if (specialOfferText != "")
@@ -228,7 +228,7 @@ namespace StoreKata
         }
 
         // Special Item Test (Buy N for $X)
-        public Item BuyNGetXSpecial(Item storeItem, int quanitityQualification, float amount)
+        public Item BuyNGetXSpecial(Item storeItem, int quantityQualification, float amount)
         {
             // Only apply to non-weighed items
             if (storeItem.type != Item.Type.Each)
@@ -236,13 +236,13 @@ namespace StoreKata
 
             Item item = storeItem;
 
-            if (storeItem.quanity >= quanitityQualification)
+            if (storeItem.quanity >= quantityQualification)
             {
-                item.discountAmount = (quanitityQualification * storeItem.value) - amount;
+                item.discountAmount = (quantityQualification * storeItem.value) - amount;
                 totalPrice -= item.discountAmount;
 
                 // Display to customer
-                specialOfferText = string.Format("-Applied Buy {0} for ${1} special for {2}!\n\t\t\t\t\t\t- ${3}", quanitityQualification, amount, storeItem.name, item.discountAmount);
+                specialOfferText = string.Format("-Applied Buy {0} for ${1} special for {2}!\n\t\t\t\t\t\t- ${3}", quantityQualification, amount, storeItem.name, item.discountAmount);
             }
 
             if (specialOfferText != "")

@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 
 namespace StoreKata
 {
@@ -90,5 +91,30 @@ namespace StoreKata
             Assert.AreEqual(resultItem.discountAmount, itemManager.BuyNItemsGetMOffSpecial(testItem, 1, 0.5f, 2).discountAmount);
         }
 
+        [TestCase]
+        public void BuyNGetXSpecialTest()
+        {
+            ItemManager.Item testItem;
+            testItem.name = "Soup";
+            testItem.quanity = 3;
+            testItem.value = 2.70f;
+            testItem.price = 0.0f;
+            testItem.type = ItemManager.Item.Type.Each;
+            testItem.markDownAmount = 0.0f;
+            testItem.discountAmount = 0.0f;
+
+            ItemManager.Item resultItem;
+            resultItem.name = "Soup";
+            resultItem.quanity = 1;
+            resultItem.value = 2.70f;
+            resultItem.price = 0.0f;
+            resultItem.type = ItemManager.Item.Type.Each;
+            resultItem.markDownAmount = 0.0f;
+            resultItem.discountAmount = 6.10f; 
+
+            // Buy 3 for $2.00 soup (Normal price = $8.10, discount amount after sale = $6.10)
+            Assert.AreEqual(resultItem.discountAmount,2, Math.Round(itemManager.BuyNGetXSpecial(testItem, 3, 2.0f).discountAmount, 2));
+
+        }
     }
 }
