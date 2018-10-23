@@ -169,7 +169,7 @@ namespace StoreKata
         }
 
         // Markdown Item Test
-        private Item Markdown(Item storeItem, float amount)
+        public Item Markdown(Item storeItem, float amount)
         {
             if (amount <= 0.0f)
                 return storeItem;

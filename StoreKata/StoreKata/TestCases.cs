@@ -33,6 +33,33 @@ namespace StoreKata
             Assert.AreEqual(resultedItem, itemManager.ScanItem(testItem));
 
         }
+
+        [TestCase]
+        public void MarkDownItemTest()
+        {
+            ItemManager.Item testItem;
+            testItem.name = "Soup";
+            testItem.quanity = 10;
+            testItem.value = 2.70f;
+            testItem.price = 0.0f;
+            testItem.type = ItemManager.Item.Type.Each;
+            testItem.markDownAmount = 0.0f;
+            testItem.discountAmount = 0.0f;
+
+            float desiredMarkDownAmount = 1.0f;
+
+            // Resulted item is the updated version of the testItem started with
+            ItemManager.Item resultedItem;
+            resultedItem.name = "Soup";
+            resultedItem.quanity = 10;
+            resultedItem.value = 1.70f;
+            resultedItem.price = 0.0f;
+            resultedItem.type = ItemManager.Item.Type.Each;
+            resultedItem.markDownAmount = 0.0f;
+            resultedItem.discountAmount = 0.0f;
+
+            Assert.AreEqual(resultedItem, itemManager.Markdown(testItem, desiredMarkDownAmount));
+        }
         
     }
 }
