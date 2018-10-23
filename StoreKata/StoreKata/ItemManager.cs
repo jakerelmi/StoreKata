@@ -7,7 +7,7 @@ namespace StoreKata
     {
 
         private List<Item> items = new List<Item>();
-        private float totalPrice = 0.0f;
+        public float totalPrice;
         private string markedDownText = "";
         private string specialOfferText = "";
 
@@ -16,7 +16,7 @@ namespace StoreKata
         public ItemManager()
         {
             testItem1.name = "Milk";
-            testItem1.quanity = 1;
+            testItem1.quantity = 1;
             testItem1.value = 2.50f;
             testItem1.price = 0.0f;
             testItem1.type = Item.Type.Each;
@@ -24,7 +24,7 @@ namespace StoreKata
             testItem1.discountAmount = 0.0f;
 
             testItem2.name = "Soup";
-            testItem2.quanity = 10;
+            testItem2.quantity = 10;
             testItem2.value = 2.70f;
             testItem2.price = 0.0f;
             testItem2.type = Item.Type.Each;
@@ -32,7 +32,7 @@ namespace StoreKata
             testItem2.discountAmount = 0.0f;
 
             testItem3.name = "Bananas";
-            testItem3.quanity = 0.4f;
+            testItem3.quantity = 0.4f;
             testItem3.value = 1.89f;
             testItem3.price = 0.0f;
             testItem3.type = Item.Type.Weighed;
@@ -40,7 +40,7 @@ namespace StoreKata
             testItem3.discountAmount = 0.0f;
 
             testItem4.name = "Beef";
-            testItem4.quanity = 1.0f;
+            testItem4.quantity = 1.0f;
             testItem4.value = 1.70f;
             testItem4.price = 0.0f;
             testItem4.type = Item.Type.Weighed;
@@ -52,7 +52,7 @@ namespace StoreKata
         {
             // Fixed
             public string name;
-            public float quanity;
+            public float quantity;
 
             public float value;
 
@@ -64,34 +64,6 @@ namespace StoreKata
 
             public Type type;
             public enum Type { Weighed, Each };
-        }
-
-        public void RunTest()
-        {
-            // Milk
-            testItem1 = Markdown(testItem1, testItem1.markDownAmount);
-            testItem1 = ScanItemInterface(testItem1);
-
-            // Soup
-            testItem2 = Markdown(testItem2, testItem2.markDownAmount);
-            testItem2 = ScanItemInterface(testItem2);
-
-            // Bananas
-            testItem3 = Markdown(testItem3, testItem3.markDownAmount);
-            testItem3 = ScanItemInterface(testItem3);
-
-            // Beef
-            testItem4 = ScanItemInterface(testItem4);
-
-            // Apply specials
-            BuyNItemsGetMOffSpecial(testItem1, 2, 0.5f, 2); // Buy 2 get next 50% off on Milk
-            testItem2 = BuyNItemsGetMOffSpecial(testItem2, 1, 1.0f, 4); // Buy 1 get 1 free soup (Max of 4).
-            testItem2 = BuyNGetXSpecial(testItem2, 3, 2.0f); // Buy 3 for $2.00 soup
-            testItem4 = BuyNGetMForXSpecialWeightedItems(testItem3, testItem4, 0.5f); // Buy N and get M of lesser or equal value X% off
-
-            Console.WriteLine("\n\t\t\t\t\t Total: $" + totalPrice);
-
-            RemoveStoreItem(testItem2, 1);
         }
 
         public void UpdateStoreUsingUserInput()
@@ -157,7 +129,7 @@ namespace StoreKata
         public Item ScanItem(Item storeItem)
         {
             Item item = storeItem;
-            item.price = item.value * item.quanity;
+            item.price = item.value * item.quantity;
 
             // Increment total price
             totalPrice += (item.price);
@@ -192,12 +164,12 @@ namespace StoreKata
 
             Item item = storeItem;
 
-            if (storeItem.quanity > quantityQualification)
+            if (storeItem.quantity > quantityQualification)
             {
                 // To accumulate specials
                 int qualifications = 0;
                 int index = 0;
-                for (int i = 0; i < storeItem.quanity; i++)
+                for (int i = 0; i < storeItem.quantity; i++)
                 {
                     if (index == quantityQualification)
                     {
@@ -236,7 +208,7 @@ namespace StoreKata
 
             Item item = storeItem;
 
-            if (storeItem.quanity >= quantityQualification)
+            if (storeItem.quantity >= quantityQualification)
             {
                 item.discountAmount = (quantityQualification * storeItem.value) - amount;
                 totalPrice -= item.discountAmount;
@@ -275,13 +247,32 @@ namespace StoreKata
         }
 
         // Remove Item Test
-        private void RemoveStoreItem(Item storeItem, int count)
+        public void RemoveStoreItem(Item storeItem, int count)
         {
-            items.Remove(storeItem);
-            storeItem.quanity--;
-            string removeItemText = string.Format("\n\n{0} {1}(s) has been removed:", count, storeItem.name);
+            Item item = storeItem;
 
-            float updatedPrice = ((storeItem.value * count) - storeItem.markDownAmount) + storeItem.discountAmount;
+            if (item.type == Item.Type.Each)
+            {
+                if (storeItem.quantity >= 1)
+                {
+                    item.quantity--;
+
+                    items.Remove(storeItem);
+                    items.Add(item);
+
+                    if (item.quantity == 0)
+                        items.Remove(item);
+                }
+            }
+            else
+            {
+                // Remove weighted items completely
+                items.Remove(item);
+            }
+
+            string removeItemText = string.Format("\n\n{0} {1}(s) has been removed:", count, item.name);
+
+            float updatedPrice = ((item.value * count) - item.markDownAmount) + item.discountAmount;
 
             //Update total price
             totalPrice -= updatedPrice;
@@ -297,14 +288,14 @@ namespace StoreKata
         {
             if (item.type == Item.Type.Each)
             {
-                if (item.quanity > 1)
-                    Console.WriteLine("- " + item.name + "\t\t" + item.quanity + "X" + " ($" + item.value + " each) " + "\n\t\t\t\t\t\t$" + item.price);
+                if (item.quantity > 1)
+                    Console.WriteLine("- " + item.name + "\t\t" + item.quantity + "X" + " ($" + item.value + " each) " + "\n\t\t\t\t\t\t$" + item.price);
                 else
                     Console.WriteLine("- " + item.name + "\t\t\t\t\t\t$" + item.price);
             }
             else
             {
-                Console.WriteLine("- " + item.name + "\t" + item.quanity + " lbs." + " ($" + item.value + " / lb.) " + "\n\t\t\t\t\t\t$" + item.price);
+                Console.WriteLine("- " + item.name + "\t" + item.quantity + " lbs." + " ($" + item.value + " / lb.) " + "\n\t\t\t\t\t\t$" + item.price);
             }
 
             if (item.markDownAmount > 0.0f)
@@ -325,7 +316,7 @@ namespace StoreKata
                 int input;
                 if (int.TryParse(Console.ReadLine(), out input))
                 {
-                    storeItem.quanity = input;
+                    storeItem.quantity = input;
                 }
                 else
                 {
@@ -343,7 +334,7 @@ namespace StoreKata
             }
             else if (item.name == "Milk")
             {
-                if (item.quanity >= 3)
+                if (item.quantity >= 3)
                     BuyNGetXSpecial(item, 3, 2.0f);
             }
 

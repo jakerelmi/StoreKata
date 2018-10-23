@@ -7,7 +7,6 @@ namespace StoreKata
         static void Main(string[] args)
         {
             ItemManager itemManager = new ItemManager();
-            //itemManager.RunTest();
 
             itemManager.DisplayStoreOptions();
             while (true)
